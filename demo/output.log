@@ -1,0 +1,319 @@
+
+========== 0. Certificate authority and node start-up ==========
+     1 ms  topology: 7 nodes, links A–B, A–C, B–D, C–D, C–E, D–F, E–F, F–G
+     1 ms  radio: MTU 96 B per frame, 57600 bit/s
+   132 ms  [CA] root certificate "KPI Mesh Root CA" serial=01A5C42B856A25C31C sha256=12:3A:8B:55:30:C9:08:F5…
+   135 ms  [CA] listening on http://127.0.0.1:8800
+   295 ms  [CA] issued certificate CN=A serial=020F1B19B5FB536F9E
+   296 ms  [A] up on :9101, RSA-2048 key generated, certificate CN=A serial=020F1B19B5FB536F9E issued by CA
+   441 ms  [CA] issued certificate CN=B serial=028C110644A2507A1C
+   442 ms  [B] up on :9102, RSA-2048 key generated, certificate CN=B serial=028C110644A2507A1C issued by CA
+   530 ms  [CA] issued certificate CN=C serial=02DB4565061E435C7C
+   531 ms  [C] up on :9103, RSA-2048 key generated, certificate CN=C serial=02DB4565061E435C7C issued by CA
+   633 ms  [CA] issued certificate CN=D serial=02CA05050C0A407844
+   634 ms  [D] up on :9104, RSA-2048 key generated, certificate CN=D serial=02CA05050C0A407844 issued by CA
+   957 ms  [CA] issued certificate CN=E serial=02284CA981297572CB
+   957 ms  [E] up on :9105, RSA-2048 key generated, certificate CN=E serial=02284CA981297572CB issued by CA
+  1097 ms  [CA] issued certificate CN=F serial=02B3DF51852C6CB42A
+  1098 ms  [F] up on :9106, RSA-2048 key generated, certificate CN=F serial=02B3DF51852C6CB42A issued by CA
+  1214 ms  [CA] issued certificate CN=G serial=02AAA74D855ADACA01
+  1215 ms  [G] up on :9107, RSA-2048 key generated, certificate CN=G serial=02AAA74D855ADACA01 issued by CA
+  1224 ms  [B] link B–A is UP
+  1224 ms  [C] link C–A is UP
+  1224 ms  [D] link D–B is UP
+  1224 ms  [D] link D–C is UP
+  1224 ms  [E] link E–C is UP
+  1224 ms  [A] link A–B is UP
+  1225 ms  [F] link F–D is UP
+  1225 ms  [F] link F–E is UP
+  1225 ms  [A] link A–C is UP
+  1225 ms  [G] link G–F is UP
+  1225 ms  [B] link B–D is UP
+  1225 ms  [C] link C–E is UP
+  1225 ms  [D] link D–F is UP
+  1225 ms  [F] link F–G is UP
+  1225 ms  [C] link C–D is UP
+  1225 ms  [E] link E–F is UP
+  1420 ms  link-state routing converged on every node
+routing table of A:
+   to B: next hop B, 1 hop(s), path A→B
+   to C: next hop C, 1 hop(s), path A→C
+   to D: next hop B, 2 hop(s), path A→B→D
+   to E: next hop C, 2 hop(s), path A→C→E
+   to F: next hop B, 3 hop(s), path A→B→D→F
+   to G: next hop B, 4 hop(s), path A→B→D→F→G
+routing table of G:
+   to F: next hop F, 1 hop(s), path G→F
+   to D: next hop F, 2 hop(s), path G→F→D
+   to E: next hop F, 2 hop(s), path G→F→E
+   to B: next hop F, 3 hop(s), path G→F→D→B
+   to C: next hop F, 3 hop(s), path G→F→D→C
+   to A: next hop F, 4 hop(s), path G→F→D→B→A
+
+========== 1. Handshake between neighbours A and B (1 hop) ==========
+  1421 ms  [A] (1) ClientHello → B [sid=34fb1cde3af3] client_random=d434128fc03c8f5d… route A→B (1 hop(s))
+  1460 ms  [B] (2) ServerHello → A [sid=34fb1cde3af3] server_random=6167f3c1ab668222… + X.509 certificate CN=B serial=028C110644A2507A1C
+  1718 ms  [CA] verify CN=B serial=028C110644A2507A1C -> VALID
+  1719 ms  [A] (3) certificate of B verified: signed by root CA, CN=B, not expired; CA /verify: not revoked
+  1721 ms  [A] (4) premaster secret (48 B, sha256=a6315899f044779a…) encrypted with B's RSA public key (RSA-OAEP, 256 B) → B
+  1721 ms  [A] (5) session keys derived: master=3f1493dd665ed9cd… client_write_key=75f23a84d6a0e3a2… server_write_key=e2f558831eb7a960…
+  1722 ms  [A] (6) Finished "ready" → B, encrypted with client_write_key, verify_data=4c7355cbf468f829a91df625
+  1806 ms  [B] (4) premaster secret decrypted with own private key (48 B, sha256=a6315899f044779a…)
+  1806 ms  [B] (5) session keys derived: master=3f1493dd665ed9cd… client_write_key=75f23a84d6a0e3a2… server_write_key=e2f558831eb7a960…
+  1836 ms  [B] (6) Finished "ready" from A decrypted, verify_data=4c7355cbf468f829a91df625 matches
+  1837 ms  [B] (6) Finished "ready" → A, encrypted with server_write_key, verify_data=33f2b2362d17e4b84f7a4be8
+  1837 ms  [B] (7) handshake with A complete in 378 ms, secure channel sid=34fb1cde3af3 (AES-128-GCM)
+  1875 ms  [A] (6) Finished "ready" from B decrypted, verify_data=33f2b2362d17e4b84f7a4be8 matches
+  1875 ms  [A] (7) handshake with B complete in 454 ms, secure channel sid=34fb1cde3af3 (AES-128-GCM)
+  1876 ms  [A] chat → B: "Привіт, B! Це A." (record seq=1, 49 B encrypted)
+  1911 ms  [B] chat ← A: "Привіт, B! Це A." (decrypted with session 34fb1cde3af3)
+  1913 ms  [B] chat → A: "Привіт, A! Канал захищений." (record seq=1, 72 B encrypted)
+  1952 ms  [A] chat ← B: "Привіт, A! Канал захищений." (decrypted with session 34fb1cde3af3)
+
+========== 2. Handshake between A and G through intermediate nodes (4 hops) ==========
+  1953 ms  [A] (1) ClientHello → G [sid=bbbe441622fb] client_random=d2762906d7d16095… route A→B→D→F→G (4 hop(s))
+  1990 ms  [B] forward client_hello A→G to D (opaque to this node)
+  2026 ms  [D] forward client_hello A→G to F (opaque to this node)
+  2061 ms  [F] forward client_hello A→G to G (opaque to this node)
+  2099 ms  [G] (2) ServerHello → A [sid=bbbe441622fb] server_random=e5469b4e3492847a… + X.509 certificate CN=G serial=02AAA74D855ADACA01
+  2345 ms  [F] forward server_hello G→A to D (opaque to this node)
+  2590 ms  [D] forward server_hello G→A to B (opaque to this node)
+  2837 ms  [B] forward server_hello G→A to A (opaque to this node)
+  3091 ms  [CA] verify CN=G serial=02AAA74D855ADACA01 -> VALID
+  3092 ms  [A] (3) certificate of G verified: signed by root CA, CN=G, not expired; CA /verify: not revoked
+  3092 ms  [A] (4) premaster secret (48 B, sha256=dc16d8cfbb4c30f8…) encrypted with G's RSA public key (RSA-OAEP, 256 B) → G
+  3093 ms  [A] (5) session keys derived: master=8114c9ad12278e12… client_write_key=159bf18bfd947101… server_write_key=31f934732331167e…
+  3093 ms  [A] (6) Finished "ready" → G, encrypted with client_write_key, verify_data=4f22e9fcfe39e9e702ca9ddf
+  3171 ms  [B] forward client_key_exchange A→G to D (opaque to this node)
+  3206 ms  [B] forward finished A→G to D (opaque to this node)
+  3249 ms  [D] forward client_key_exchange A→G to F (opaque to this node)
+  3285 ms  [D] forward finished A→G to F (opaque to this node)
+  3327 ms  [F] forward client_key_exchange A→G to G (opaque to this node)
+  3365 ms  [F] forward finished A→G to G (opaque to this node)
+  3413 ms  [G] (4) premaster secret decrypted with own private key (48 B, sha256=dc16d8cfbb4c30f8…)
+  3413 ms  [G] (5) session keys derived: master=8114c9ad12278e12… client_write_key=159bf18bfd947101… server_write_key=31f934732331167e…
+  3442 ms  [G] (6) Finished "ready" from A decrypted, verify_data=4f22e9fcfe39e9e702ca9ddf matches
+  3443 ms  [G] (6) Finished "ready" → A, encrypted with server_write_key, verify_data=7b46317b8ada47418030e29c
+  3443 ms  [G] (7) handshake with A complete in 1344 ms, secure channel sid=bbbe441622fb (AES-128-GCM)
+  3479 ms  [F] forward finished G→A to D (opaque to this node)
+  3516 ms  [D] forward finished G→A to B (opaque to this node)
+  3552 ms  [B] forward finished G→A to A (opaque to this node)
+  3588 ms  [A] (6) Finished "ready" from G decrypted, verify_data=7b46317b8ada47418030e29c matches
+  3588 ms  [A] (7) handshake with G complete in 1635 ms, secure channel sid=bbbe441622fb (AES-128-GCM)
+  3588 ms  [A] chat → G: "G, чуєш мене? Пакети йдуть через B, D і F." (record seq=1, 92 B encrypted)
+  3631 ms  [B] forward app A→G to D (opaque to this node)
+  3674 ms  [D] forward app A→G to F (opaque to this node)
+  3718 ms  [F] forward app A→G to G (opaque to this node)
+  3763 ms  [G] chat ← A: "G, чуєш мене? Пакети йдуть через B, D і F." (decrypted with session bbbe441622fb)
+  3763 ms  [G] chat → A: "Чую, A. Проміжні вузли бачать лише шифротекст." (record seq=1, 107 B encrypted)
+  3812 ms  [F] forward app G→A to D (opaque to this node)
+  3860 ms  [D] forward app G→A to B (opaque to this node)
+  3907 ms  [B] forward app G→A to A (opaque to this node)
+  3956 ms  [A] chat ← G: "Чую, A. Проміжні вузли бачать лише шифротекст." (decrypted with session bbbe441622fb)
+  3959 ms  [A] file → G: message.txt (1390 B, sha256=944ad524c3bdf671…, record seq=2)
+  4419 ms  [B] forward app A→G to D (opaque to this node)
+  4880 ms  [D] forward app A→G to F (opaque to this node)
+  5342 ms  [F] forward app A→G to G (opaque to this node)
+  5800 ms  [G] file ← A: message.txt (1390 B), sha256 matches
+  5801 ms  file delivered in 1843 ms, 1390 B, integrity OK, identical: true
+
+========== 3. Broadcast from A along the shortest-path tree ==========
+  5802 ms  tree rooted at A: A→B, A→C, B→D, C→E, D→F, F→G
+  5807 ms  [A] broadcast 808f903d "Усім вузлам: планове оновлення ключів о 12:00." signed with own private key
+  5807 ms  [A] broadcast 808f903d: forwarding to tree children [B, C]
+  5807 ms  [A] (1) ClientHello → C [sid=26d307a28bc7] client_random=6f1726579248a30b… route A→C (1 hop(s))
+  5844 ms  [C] (2) ServerHello → A [sid=26d307a28bc7] server_random=456e6694c952d62d… + X.509 certificate CN=C serial=02DB4565061E435C7C
+  6092 ms  [CA] verify CN=C serial=02DB4565061E435C7C -> VALID
+  6094 ms  [A] (3) certificate of C verified: signed by root CA, CN=C, not expired; CA /verify: not revoked
+  6094 ms  [A] (4) premaster secret (48 B, sha256=a63413eba19c1541…) encrypted with C's RSA public key (RSA-OAEP, 256 B) → C
+  6094 ms  [A] (5) session keys derived: master=352d3809425c124e… client_write_key=3d0182f718f60e07… server_write_key=e9ab9aea033f2e6f…
+  6094 ms  [A] (6) Finished "ready" → C, encrypted with client_write_key, verify_data=82f7b1f35b7f5ff946966d2e
+  6178 ms  [C] (4) premaster secret decrypted with own private key (48 B, sha256=a63413eba19c1541…)
+  6178 ms  [C] (5) session keys derived: master=352d3809425c124e… client_write_key=3d0182f718f60e07… server_write_key=e9ab9aea033f2e6f…
+  6209 ms  [C] (6) Finished "ready" from A decrypted, verify_data=82f7b1f35b7f5ff946966d2e matches
+  6210 ms  [C] (6) Finished "ready" → A, encrypted with server_write_key, verify_data=0b8f2b2cd6930f935e72a586
+  6210 ms  [C] (7) handshake with A complete in 366 ms, secure channel sid=26d307a28bc7 (AES-128-GCM)
+  6221 ms  [B] broadcast ← A via A: "Усім вузлам: планове оновлення ключів о 12:00." (origin signature OK)
+  6221 ms  [B] broadcast 808f903d: forwarding to tree children [D]
+  6222 ms  [B] (1) ClientHello → D [sid=be93ad649a1f] client_random=d9399d316c9445d0… route B→D (1 hop(s))
+  6246 ms  [A] (6) Finished "ready" from C decrypted, verify_data=0b8f2b2cd6930f935e72a586 matches
+  6246 ms  [A] (7) handshake with C complete in 439 ms, secure channel sid=26d307a28bc7 (AES-128-GCM)
+  6259 ms  [D] (2) ServerHello → B [sid=be93ad649a1f] server_random=f4cf5996a430e056… + X.509 certificate CN=D serial=02CA05050C0A407844
+  6515 ms  [CA] verify CN=D serial=02CA05050C0A407844 -> VALID
+  6516 ms  [B] (3) certificate of D verified: signed by root CA, CN=D, not expired; CA /verify: not revoked
+  6516 ms  [B] (4) premaster secret (48 B, sha256=eb88188b9483b66f…) encrypted with D's RSA public key (RSA-OAEP, 256 B) → D
+  6517 ms  [B] (5) session keys derived: master=4a67e96ede4ded06… client_write_key=e90264d99910267a… server_write_key=0145af844b50c93f…
+  6517 ms  [B] (6) Finished "ready" → D, encrypted with client_write_key, verify_data=d4ec97b0664a8db52532acd6
+  6601 ms  [D] (4) premaster secret decrypted with own private key (48 B, sha256=eb88188b9483b66f…)
+  6601 ms  [D] (5) session keys derived: master=4a67e96ede4ded06… client_write_key=e90264d99910267a… server_write_key=0145af844b50c93f…
+  6632 ms  [D] (6) Finished "ready" from B decrypted, verify_data=d4ec97b0664a8db52532acd6 matches
+  6633 ms  [D] (6) Finished "ready" → B, encrypted with server_write_key, verify_data=9a341ce023db6e65ff377b58
+  6633 ms  [D] (7) handshake with B complete in 374 ms, secure channel sid=be93ad649a1f (AES-128-GCM)
+  6670 ms  [C] broadcast ← A via A: "Усім вузлам: планове оновлення ключів о 12:00." (origin signature OK)
+  6670 ms  [C] broadcast 808f903d: forwarding to tree children [E]
+  6671 ms  [C] (1) ClientHello → E [sid=f54661ed5939] client_random=5339d5e2e0cfe0c4… route C→E (1 hop(s))
+  6672 ms  [B] (6) Finished "ready" from D decrypted, verify_data=9a341ce023db6e65ff377b58 matches
+  6672 ms  [B] (7) handshake with D complete in 451 ms, secure channel sid=be93ad649a1f (AES-128-GCM)
+  6707 ms  [E] (2) ServerHello → C [sid=f54661ed5939] server_random=37537cda80f1b7c6… + X.509 certificate CN=E serial=02284CA981297572CB
+  6957 ms  [CA] verify CN=E serial=02284CA981297572CB -> VALID
+  6959 ms  [C] (3) certificate of E verified: signed by root CA, CN=E, not expired; CA /verify: not revoked
+  6959 ms  [C] (4) premaster secret (48 B, sha256=74741f1b892fbfbc…) encrypted with E's RSA public key (RSA-OAEP, 256 B) → E
+  6959 ms  [C] (5) session keys derived: master=da6212f19c02c880… client_write_key=ce84fc2a940eff1f… server_write_key=357ad1524f917d6f…
+  6960 ms  [C] (6) Finished "ready" → E, encrypted with client_write_key, verify_data=f7112f654cb4b29bedb1b808
+  7045 ms  [E] (4) premaster secret decrypted with own private key (48 B, sha256=74741f1b892fbfbc…)
+  7045 ms  [E] (5) session keys derived: master=da6212f19c02c880… client_write_key=ce84fc2a940eff1f… server_write_key=357ad1524f917d6f…
+  7072 ms  [E] (6) Finished "ready" from C decrypted, verify_data=f7112f654cb4b29bedb1b808 matches
+  7073 ms  [E] (6) Finished "ready" → C, encrypted with server_write_key, verify_data=a186043fda5af8a248c88dd2
+  7073 ms  [E] (7) handshake with C complete in 366 ms, secure channel sid=f54661ed5939 (AES-128-GCM)
+  7087 ms  [D] broadcast ← A via B: "Усім вузлам: планове оновлення ключів о 12:00." (origin signature OK)
+  7088 ms  [D] broadcast 808f903d: forwarding to tree children [F]
+  7088 ms  [D] (1) ClientHello → F [sid=8fbb49683749] client_random=2b9719792e6c73ca… route D→F (1 hop(s))
+  7111 ms  [C] (6) Finished "ready" from E decrypted, verify_data=a186043fda5af8a248c88dd2 matches
+  7111 ms  [C] (7) handshake with E complete in 440 ms, secure channel sid=f54661ed5939 (AES-128-GCM)
+  7124 ms  [F] (2) ServerHello → D [sid=8fbb49683749] server_random=0e60bd52228604a4… + X.509 certificate CN=F serial=02B3DF51852C6CB42A
+  7377 ms  [CA] verify CN=F serial=02B3DF51852C6CB42A -> VALID
+  7378 ms  [D] (3) certificate of F verified: signed by root CA, CN=F, not expired; CA /verify: not revoked
+  7379 ms  [D] (4) premaster secret (48 B, sha256=82e8e559768c616a…) encrypted with F's RSA public key (RSA-OAEP, 256 B) → F
+  7379 ms  [D] (5) session keys derived: master=05bf9e6f14ff9d6b… client_write_key=925c1fafbbb9a4db… server_write_key=b0a566abd80422eb…
+  7379 ms  [D] (6) Finished "ready" → F, encrypted with client_write_key, verify_data=1608d9e139d576c9538871a6
+  7467 ms  [F] (4) premaster secret decrypted with own private key (48 B, sha256=82e8e559768c616a…)
+  7467 ms  [F] (5) session keys derived: master=05bf9e6f14ff9d6b… client_write_key=925c1fafbbb9a4db… server_write_key=b0a566abd80422eb…
+  7494 ms  [F] (6) Finished "ready" from D decrypted, verify_data=1608d9e139d576c9538871a6 matches
+  7494 ms  [F] (6) Finished "ready" → D, encrypted with server_write_key, verify_data=e3d5263359531139e2686b86
+  7494 ms  [F] (7) handshake with D complete in 370 ms, secure channel sid=8fbb49683749 (AES-128-GCM)
+  7531 ms  [D] (6) Finished "ready" from F decrypted, verify_data=e3d5263359531139e2686b86 matches
+  7531 ms  [D] (7) handshake with F complete in 443 ms, secure channel sid=8fbb49683749 (AES-128-GCM)
+  7534 ms  [E] broadcast ← A via C: "Усім вузлам: планове оновлення ключів о 12:00." (origin signature OK)
+  7953 ms  [F] broadcast ← A via D: "Усім вузлам: планове оновлення ключів о 12:00." (origin signature OK)
+  7954 ms  [F] broadcast 808f903d: forwarding to tree children [G]
+  7954 ms  [F] (1) ClientHello → G [sid=732cf90de9be] client_random=042d5797353420ff… route F→G (1 hop(s))
+  7991 ms  [G] (2) ServerHello → F [sid=732cf90de9be] server_random=023b5175e7256d74… + X.509 certificate CN=G serial=02AAA74D855ADACA01
+  8248 ms  [CA] verify CN=G serial=02AAA74D855ADACA01 -> VALID
+  8250 ms  [F] (3) certificate of G verified: signed by root CA, CN=G, not expired; CA /verify: not revoked
+  8250 ms  [F] (4) premaster secret (48 B, sha256=662e150c76dca80b…) encrypted with G's RSA public key (RSA-OAEP, 256 B) → G
+  8250 ms  [F] (5) session keys derived: master=81aeb4247ea2d609… client_write_key=79bbefff6debe54b… server_write_key=b44b90d37ce7c561…
+  8250 ms  [F] (6) Finished "ready" → G, encrypted with client_write_key, verify_data=6bf7ab671b9e519f2f3f1749
+  8338 ms  [G] (4) premaster secret decrypted with own private key (48 B, sha256=662e150c76dca80b…)
+  8338 ms  [G] (5) session keys derived: master=81aeb4247ea2d609… client_write_key=79bbefff6debe54b… server_write_key=b44b90d37ce7c561…
+  8369 ms  [G] (6) Finished "ready" from F decrypted, verify_data=6bf7ab671b9e519f2f3f1749 matches
+  8369 ms  [G] (6) Finished "ready" → F, encrypted with server_write_key, verify_data=092280d20da9efc92211a6fa
+  8369 ms  [G] (7) handshake with F complete in 378 ms, secure channel sid=732cf90de9be (AES-128-GCM)
+  8407 ms  [F] (6) Finished "ready" from G decrypted, verify_data=092280d20da9efc92211a6fa matches
+  8407 ms  [F] (7) handshake with G complete in 453 ms, secure channel sid=732cf90de9be (AES-128-GCM)
+  8830 ms  [G] broadcast ← A via F: "Усім вузлам: планове оновлення ключів о 12:00." (origin signature OK)
+  8831 ms  all 6 nodes received the broadcast once; link transmissions: tree 6, naive flooding would need 10
+
+========== 4a. Attack: compromised router C replaces E's certificate with one from a rogue CA ==========
+  9205 ms  attacker built a rogue CA named "KPI Mesh Root CA" and a certificate CN=E serial=025A8E5CA84C0D18FC
+  9205 ms  [A] (1) ClientHello → E [sid=3572c8ef63b2] client_random=caea9f872da4e4f2… route A→C→E (2 hop(s))
+  9242 ms  [C] forward client_hello A→E to E (opaque to this node)
+  9278 ms  [E] (2) ServerHello → A [sid=3572c8ef63b2] server_random=9c4b204602f6d0f1… + X.509 certificate CN=E serial=02284CA981297572CB
+  9522 ms  [C] (attacker) swapped the certificate inside ServerHello
+  9523 ms  [C] forward server_hello E→A to A (opaque to this node)
+  9773 ms  [A] ✗ handshake/session with E aborted: certificate check failed: signature does not belong to the trusted root CA
+  9774 ms  result: A refused to continue — certificate check failed: signature does not belong to the trusted root CA
+  9803 ms  [C] forward alert A→E to E (opaque to this node)
+  9833 ms  [E] ✗ handshake/session with A aborted: peer sent alert: certificate check failed: signature does not belong to the trusted root CA
+
+========== 4b. Attack: router C presents its own valid certificate instead of E's ==========
+  9834 ms  [A] (1) ClientHello → E [sid=a98a44e91e7c] client_random=d922e73761935e23… route A→C→E (2 hop(s))
+  9871 ms  [C] forward client_hello A→E to E (opaque to this node)
+  9909 ms  [E] (2) ServerHello → A [sid=a98a44e91e7c] server_random=dadf2d5fda308786… + X.509 certificate CN=E serial=02284CA981297572CB
+ 10153 ms  [C] (attacker) put its own CA-signed certificate into ServerHello
+ 10153 ms  [C] forward server_hello E→A to A (opaque to this node)
+ 10400 ms  [A] ✗ handshake/session with E aborted: certificate check failed: certificate is issued to "C", expected "E"
+ 10401 ms  result: A refused to continue — certificate check failed: certificate is issued to "C", expected "E"
+ 10431 ms  [C] forward alert A→E to E (opaque to this node)
+ 10462 ms  [E] ✗ handshake/session with A aborted: peer sent alert: certificate check failed: certificate is issued to "C", expected "E"
+
+========== 4c. Attack: router C flips one byte of an encrypted record ==========
+ 10463 ms  [A] (1) ClientHello → E [sid=5d0722d803a9] client_random=c5fc6b4f704872f5… route A→C→E (2 hop(s))
+ 10499 ms  [C] forward client_hello A→E to E (opaque to this node)
+ 10535 ms  [E] (2) ServerHello → A [sid=5d0722d803a9] server_random=da957aab9d0ec255… + X.509 certificate CN=E serial=02284CA981297572CB
+ 10779 ms  [C] forward server_hello E→A to A (opaque to this node)
+ 11033 ms  [CA] verify CN=E serial=02284CA981297572CB -> VALID
+ 11034 ms  [A] (3) certificate of E verified: signed by root CA, CN=E, not expired; CA /verify: not revoked
+ 11035 ms  [A] (4) premaster secret (48 B, sha256=d146de9939764469…) encrypted with E's RSA public key (RSA-OAEP, 256 B) → E
+ 11035 ms  [A] (5) session keys derived: master=987dc7798e6af505… client_write_key=85ba76841ed72f1e… server_write_key=1a628318659598fd…
+ 11035 ms  [A] (6) Finished "ready" → E, encrypted with client_write_key, verify_data=550a7ec58a7b4a46352bf22e
+ 11115 ms  [C] forward client_key_exchange A→E to E (opaque to this node)
+ 11150 ms  [C] forward finished A→E to E (opaque to this node)
+ 11200 ms  [E] (4) premaster secret decrypted with own private key (48 B, sha256=d146de9939764469…)
+ 11200 ms  [E] (5) session keys derived: master=987dc7798e6af505… client_write_key=85ba76841ed72f1e… server_write_key=1a628318659598fd…
+ 11229 ms  [E] (6) Finished "ready" from A decrypted, verify_data=550a7ec58a7b4a46352bf22e matches
+ 11229 ms  [E] (6) Finished "ready" → A, encrypted with server_write_key, verify_data=68a5701bd01f9b7c53efe7ce
+ 11229 ms  [E] (7) handshake with A complete in 694 ms, secure channel sid=5d0722d803a9 (AES-128-GCM)
+ 11265 ms  [C] forward finished E→A to A (opaque to this node)
+ 11301 ms  [A] (6) Finished "ready" from E decrypted, verify_data=68a5701bd01f9b7c53efe7ce matches
+ 11301 ms  [A] (7) handshake with E complete in 839 ms, secure channel sid=5d0722d803a9 (AES-128-GCM)
+ 11302 ms  [A] chat → E: "Переказати 100 грн на рахунок 1" (record seq=1, 78 B encrypted)
+ 11341 ms  [C] (attacker) modified ciphertext of an application record
+ 11342 ms  [C] forward app A→E to E (opaque to this node)
+ 11381 ms  [E] ✗ handshake/session with A aborted: record authentication failed (bad_record_mac): ciphertext was modified
+ 11410 ms  [C] forward alert E→A to A (opaque to this node)
+ 11438 ms  [A] ✗ handshake/session with E aborted: peer sent alert: record authentication failed (bad_record_mac): ciphertext was modified
+ 11445 ms  router C is honest again; A sends the message once more (new handshake is made automatically)
+ 11446 ms  [A] (1) ClientHello → E [sid=692e3bf7e393] client_random=55d01da8747d55a4… route A→C→E (2 hop(s))
+ 11482 ms  [C] forward client_hello A→E to E (opaque to this node)
+ 11518 ms  [E] (2) ServerHello → A [sid=692e3bf7e393] server_random=9b5a47a47a1e05e2… + X.509 certificate CN=E serial=02284CA981297572CB
+ 11763 ms  [C] forward server_hello E→A to A (opaque to this node)
+ 12015 ms  [CA] verify CN=E serial=02284CA981297572CB -> VALID
+ 12016 ms  [A] (3) certificate of E verified: signed by root CA, CN=E, not expired; CA /verify: not revoked
+ 12016 ms  [A] (4) premaster secret (48 B, sha256=8cc42df3f22d098a…) encrypted with E's RSA public key (RSA-OAEP, 256 B) → E
+ 12016 ms  [A] (5) session keys derived: master=9c4ee937601593c8… client_write_key=9c62c24b821bb1e8… server_write_key=6ea40eb72a6b002d…
+ 12017 ms  [A] (6) Finished "ready" → E, encrypted with client_write_key, verify_data=15648b5fcdd53d97abb32150
+ 12096 ms  [C] forward client_key_exchange A→E to E (opaque to this node)
+ 12142 ms  [C] forward finished A→E to E (opaque to this node)
+ 12193 ms  [E] (4) premaster secret decrypted with own private key (48 B, sha256=8cc42df3f22d098a…)
+ 12193 ms  [E] (5) session keys derived: master=9c4ee937601593c8… client_write_key=9c62c24b821bb1e8… server_write_key=6ea40eb72a6b002d…
+ 12218 ms  [E] (6) Finished "ready" from A decrypted, verify_data=15648b5fcdd53d97abb32150 matches
+ 12218 ms  [E] (6) Finished "ready" → A, encrypted with server_write_key, verify_data=4b2a0d85241cdae0aceb898f
+ 12218 ms  [E] (7) handshake with A complete in 700 ms, secure channel sid=692e3bf7e393 (AES-128-GCM)
+ 12258 ms  [C] forward finished E→A to A (opaque to this node)
+ 12295 ms  [A] (6) Finished "ready" from E decrypted, verify_data=4b2a0d85241cdae0aceb898f matches
+ 12297 ms  [A] (7) handshake with E complete in 851 ms, secure channel sid=692e3bf7e393 (AES-128-GCM)
+ 12297 ms  [A] chat → E: "Переказати 100 грн на рахунок 1" (record seq=1, 78 B encrypted)
+ 12337 ms  [C] forward app A→E to E (opaque to this node)
+ 12377 ms  [E] chat ← A: "Переказати 100 грн на рахунок 1" (decrypted with session 692e3bf7e393)
+
+========== 5. Link D–F goes down: routes are recomputed, the A–G session survives ==========
+ 12378 ms  [D] link D–F is DOWN
+ 12380 ms  [F] link F–D is DOWN
+ 12406 ms  new path A→G: A→C→E→F→G
+ 12410 ms  [A] chat → G: "Я на зв'язку новим маршрутом, ключі сеансу ті самі." (record seq=3, 116 B encrypted)
+ 12468 ms  [C] forward app A→G to E (opaque to this node)
+ 12518 ms  [E] forward app A→G to F (opaque to this node)
+ 12568 ms  [F] forward app A→G to G (opaque to this node)
+ 12616 ms  [G] chat ← A: "Я на зв'язку новим маршрутом, ключі сеансу ті самі." (decrypted with session bbbe441622fb)
+
+========== 6. Certificate of G is revoked by the CA ==========
+ 12620 ms  [CA] revoked serial=02AAA74D855ADACA01 (CN=G)
+ 12621 ms  [B] (1) ClientHello → G [sid=d821c6d1a378] client_random=a5ecea80289619e3… route B→A→C→E→F→G (5 hop(s))
+ 12658 ms  [A] forward client_hello B→G to C (opaque to this node)
+ 12696 ms  [C] forward client_hello B→G to E (opaque to this node)
+ 12732 ms  [E] forward client_hello B→G to F (opaque to this node)
+ 12769 ms  [F] forward client_hello B→G to G (opaque to this node)
+ 12805 ms  [G] (2) ServerHello → B [sid=d821c6d1a378] server_random=56666811916fcb54… + X.509 certificate CN=G serial=02AAA74D855ADACA01
+ 13051 ms  [F] forward server_hello G→B to E (opaque to this node)
+ 13293 ms  [E] forward server_hello G→B to C (opaque to this node)
+ 13539 ms  [C] forward server_hello G→B to A (opaque to this node)
+ 13788 ms  [A] forward server_hello G→B to B (opaque to this node)
+ 14032 ms  [CA] verify CN=G serial=02AAA74D855ADACA01 -> INVALID: certificate is revoked
+ 14033 ms  [B] ✗ handshake/session with G aborted: certificate check failed: CA rejected the certificate: certificate is revoked
+ 14033 ms  result: B refused to continue — certificate check failed: CA rejected the certificate: certificate is revoked
+ 14033 ms  already established session A–G is still open: true (a revocation affects new handshakes)
+
+========== 7. Radio link statistics ==========
+┌─────────┬───────┬──────────┬─────────┬──────────┬─────────┐
+│ (index) │ link  │ frames → │ bytes → │ frames ← │ bytes ← │
+├─────────┼───────┼──────────┼─────────┼──────────┼─────────┤
+│ 0       │ 'A–B' │ 126      │ 11375   │ 67       │ 5885    │
+│ 1       │ 'A–C' │ 106      │ 9197    │ 137      │ 12415   │
+│ 2       │ 'B–D' │ 105      │ 9485    │ 64       │ 5642    │
+│ 3       │ 'C–E' │ 104      │ 9037    │ 133      │ 12074   │
+│ 4       │ 'C–D' │ 17       │ 1414    │ 17       │ 1414    │
+│ 5       │ 'E–F' │ 17       │ 1404    │ 29       │ 2577    │
+│ 6       │ 'F–G' │ 114      │ 10266   │ 67       │ 6021    │
+└─────────┴───────┴──────────┴─────────┴──────────┴─────────┘
+ 14037 ms  total on air (links still up): 1103 frames, 98206 B, 13.64 s of airtime
+ 14038 ms  done
